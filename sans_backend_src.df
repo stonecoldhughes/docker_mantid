@@ -1,0 +1,22 @@
+from mantid_src_image
+
+# clone
+run --mount=type=ssh git clone git@code.ornl.gov:sns-hfir-scse/sans/sans-backend.git
+
+# get package installer
+run [ "bash", "-c", \
+      " \
+      apt-get update && \
+      apt-get install -y python3-pip" ]
+
+volume [ "/output" ]
+volume [ "/tmp/.X11-unix"]
+
+# install packages and setup - maybe try to do this with conda instead?
+run [ "bash", "-c", \
+      " \
+      python3 /mantid/build/bin/AddPythonPath.py ; \
+      pushd sans-backend ; \
+      pip3 install -r requirements.txt; \
+      pip3 install -r requirements_dev.txt; \
+      python3 setup.py develop" ]

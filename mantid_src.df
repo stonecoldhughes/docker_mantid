@@ -1,0 +1,12 @@
+from mantid_deps_image
+
+# clone
+run --mount=type=ssh git clone git@github.com:mantidproject/mantid.git
+
+# build
+ run [ "bash", "-c", \
+      " \
+      pushd mantid && \
+      mkdir build && \
+      pushd build && \
+      cmake .. && make -j 4 && make install" ]

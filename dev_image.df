@@ -1,0 +1,22 @@
+from ubuntu:20.04
+
+env DEBIAN_FRONTEND noninteractive
+
+# general development packages
+run [ "bash", "-c", \
+      "apt-get update && \
+      apt-get install -y \
+      tmux \
+      git \
+      cmake \
+      vim \
+      g++ \
+      gdb"]
+
+# local configuration files for tmux, vim, and ssh.
+copy [ "bash_rc_file.txt", "/root/.bashrc" ] 
+copy [ ".tmux.conf", "/root/.tmux.conf"]
+copy [ ".vimrc", "/root/.vimrc"]
+copy [ ".ssh", "/root/.ssh"]
+
+# copy over the .git configuration file for your project

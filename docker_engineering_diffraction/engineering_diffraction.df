@@ -1,0 +1,6 @@
+from mantid_src_image
+
+# clone engineering diffraction
+run --mount=type=ssh git clone git@code.ornl.gov:sns-hfir-scse/diffraction/engineering-diffraction/engineering-diffraction.git
+
+# Captain! Add new things here. See if you can run the file you're supposed to refactor.

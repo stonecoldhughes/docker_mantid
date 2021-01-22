@@ -18,5 +18,3 @@ copy [ "bash_rc_file.txt", "/root/.bashrc" ]
 copy [ ".tmux.conf", "/root/.tmux.conf"]
 copy [ ".vimrc", "/root/.vimrc"]
 copy [ ".ssh", "/root/.ssh"]
-
-# copy over the .git configuration file for your project

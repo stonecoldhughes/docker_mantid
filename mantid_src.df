@@ -10,3 +10,13 @@ run --mount=type=ssh git clone git@github.com:mantidproject/mantid.git
       mkdir build && \
       pushd build && \
       cmake .. && make -j 4 && make install" ]
+
+# get mantid setup
+run [ "bash", "-c", \
+      " \
+      python3 /mantid/build/bin/AddPythonPath.py" ]
+
+# get package installer
+run [ "bash", "-c", \
+       "apt-get update && \
+       apt-get install -y python3-pip" ]

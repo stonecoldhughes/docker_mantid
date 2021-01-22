@@ -1,20 +1,18 @@
 from mantid_src_image
 
+# debug directory for host/container interaction
 volume [ "/output" ]
+
+# This is an X11 application and requires this to run
 volume [ "/tmp/.X11-unix"]
 
-# clone
+# clone sans-backend
 run --mount=type=ssh git clone git@code.ornl.gov:sns-hfir-scse/sans/sans-backend.git
 
-# get package installer
-run [ "bash", "-c", \
-       "apt-get update && \
-       apt-get install -y python3-pip" ]
-
+# install sans-backend dependencies and configure package
 run [ "bash", "-c", \
       " \
       pip3 install -I jupyter-client && \
-      python3 /mantid/build/bin/AddPythonPath.py && \
       pushd sans-backend && \
       pip3 install -r requirements.txt && \
       pip3 install -r requirements_dev.txt && \

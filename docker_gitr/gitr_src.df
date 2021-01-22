@@ -1,0 +1,28 @@
+from gitr_deps_image
+
+volume [ "/output" ]
+
+
+# clone your GITR
+run --mount=type=ssh git clone git@github.com:stonecoldhughes/GITR.git 
+
+# setup GITR git configuration
+run ["bash", "-c", \
+      " \
+      cd GITR && \
+      git config --global core.editor vim && \
+      git config --global user.name null && \ 
+      git config --global user.email null && \
+      git remote add fetch_origin git@github.com:ORNL-Fusion/GITR.git && \
+      git remote add push_origin git@github.com:stonecoldhughes/GITR.git && \
+      git remote rm origin" ]
+
+run --mount=type=ssh cd GITR && git fetch push_origin && git checkout update/build_system
+
+# Captain! Move this into the dev image
+run [ "bash", "-c", \
+      " \
+      cd /root/.ssh && \
+      chmod 600 key.priv && \
+      eval \"$(ssh-agent -s)\" && \
+      ssh-add key.priv" ]

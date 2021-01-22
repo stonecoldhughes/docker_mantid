@@ -1,0 +1,9 @@
+from dev_image
+
+# Technically the hdf5 you installed is the wrong one for the mpich you
+# installed there... note this and fix...
+run [ "bash", "-c", \
+       "apt-get update && \
+        apt-get install -y mpich && \
+        apt-get install -y libhdf5-dev && \
+        apt-get install -y m4 " ]

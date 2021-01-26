@@ -1,10 +1,10 @@
 from gitr_deps_image
 
-volume [ "/output" ]
+volume [ "/GITR" ]
 
 
 # clone your GITR
-run --mount=type=ssh git clone git@github.com:stonecoldhughes/GITR.git 
+# run --mount=type=ssh git clone git@github.com:stonecoldhughes/GITR.git 
 
 # setup GITR git configuration
 run ["bash", "-c", \

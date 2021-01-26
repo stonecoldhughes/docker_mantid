@@ -7,3 +7,5 @@ run [ "bash", "-c", \
         apt-get install -y mpich && \
         apt-get install -y libhdf5-dev && \
         apt-get install -y m4 " ]
+
+volume [ "/GITR" ]

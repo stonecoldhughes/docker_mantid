@@ -18,11 +18,3 @@ run ["bash", "-c", \
       git remote rm origin" ]
 
 run --mount=type=ssh cd GITR && git fetch push_origin && git checkout update/build_system
-
-# Captain! Move this into the dev image
-run [ "bash", "-c", \
-      " \
-      cd /root/.ssh && \
-      chmod 600 key.priv && \
-      eval \"$(ssh-agent -s)\" && \
-      ssh-add key.priv" ]

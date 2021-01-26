@@ -14,7 +14,14 @@ run [ "bash", "-c", \
       gdb"]
 
 # local configuration files for tmux, vim, and ssh.
-copy [ "bash_rc_file.txt", "/root/.bashrc" ] 
-copy [ ".tmux.conf", "/root/.tmux.conf"]
-copy [ ".vimrc", "/root/.vimrc"]
-copy [ ".ssh", "/root/.ssh"]
+copy [ "docker_artifacts/bash_rc_file.txt", "/root/.bashrc" ] 
+copy [ "docker_artifacts/tmux.conf.txt", "/root/.tmux.conf"]
+copy [ "docker_artifacts/vimrc.txt", "/root/.vimrc"]
+copy [ "docker_artifacts/ssh", "/root/.ssh"]
+
+run [ "bash", "-c", \
+      " \
+      cd /root/.ssh && \
+      chmod 600 key.priv && \
+      eval \"$(ssh-agent -s)\" && \
+      ssh-add key.priv" ]

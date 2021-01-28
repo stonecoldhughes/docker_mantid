@@ -4,8 +4,13 @@ volume [ "/output" ]
 
 
 # clone your GITR
-run --mount=type=ssh git clone git@github.com:stonecoldhughes/GITR.git 
+#run --mount=type=ssh git clone git@github.com:stonecoldhughes/GITR.git 
 
+run ["bash", "-c", \
+      " \
+      git clone https://${REPO_ACCESS_TOKEN}:x-oath-basic@github.com/stonecoldhughes/GITR.git" ]
+
+# Captain! The access token will not work for ORNL-Fusion/GITR, only your fork
 # setup GITR git configuration
 run ["bash", "-c", \
       " \
@@ -13,8 +18,12 @@ run ["bash", "-c", \
       git config --global core.editor vim && \
       git config --global user.name null && \ 
       git config --global user.email null && \
-      git remote add fetch_origin git@github.com:ORNL-Fusion/GITR.git && \
-      git remote add push_origin git@github.com:stonecoldhughes/GITR.git && \
+      git remote add fetch_origin https://${REPO_ACCESS_TOKEN}:x-oath-basic@github.com:ORNL-Fusion/GITR.git && \
+      git remote add push_origin https://${REPO_ACCESS_TOKEN}:x-oath-basic@github.com:stonecoldhughes/GITR.git && \
       git remote rm origin" ]
 
-run --mount=type=ssh cd GITR && git fetch push_origin && git checkout update/build_system
+run ["bash", "-c", \
+      " \
+      cd GITR && \
+      git fetch push_origin && \
+      git checkout update/build_system"]

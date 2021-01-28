@@ -19,6 +19,7 @@ copy [ "docker_artifacts/tmux.conf.txt", "/root/.tmux.conf"]
 copy [ "docker_artifacts/vimrc.txt", "/root/.vimrc"]
 copy [ "docker_artifacts/ssh", "/root/.ssh"]
 
+# leave just in case...
 run [ "bash", "-c", \
       " \
       cd /root/.ssh && \

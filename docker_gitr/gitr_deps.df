@@ -1,4 +1,4 @@
-from dev_image
+from dev_image as stage_0
 
 # Technically the hdf5 you installed is the wrong one for the mpich you
 # installed there... note this and fix...

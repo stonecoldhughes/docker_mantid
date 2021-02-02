@@ -1,32 +1,57 @@
 # syntax = docker/dockerfile:1.0-experimental
-from gitr_deps_image
+from dev_image as stage_0
+
+# Technically the hdf5 you installed is the wrong one for the mpich you
+# installed there... note this and fix...
+run [ "bash", "-c", \
+       "apt-get update && \
+        apt-get install -y mpich && \
+        apt-get install -y libhdf5-dev && \
+        apt-get install -y m4 " ]
+
+from stage_0 as stage_1
 
 volume [ "/output" ]
-
-# replace REPO_ACCESS_TOKEN with a $(cat /path/to/secret_file.txt), then rebuild.
-#run ["bash", "-c", \
-#      " \
-#      git clone https://${REPO_ACCESS_TOKEN}:x-oath-basic@github.com/stonecoldhughes/GITR.git" ]
 
 run --mount=type=secret,id=repo_access_token,dst=/repo_access_token.txt \
     git clone https://$(cat /repo_access_token.txt):x-oath-basic@github.com/stonecoldhughes/gitr_ci_action.git
     
 
+from stage_1 as stage_2
 
-# Captain! redo everything bdlow here
-# setup GITR git configuration
-run ["bash", "-c", \
-      " \
+
+# technically this is unsafe to have the token visible in the string but this is yours so it's
+# fine
+run --mount=type=secret,id=repo_access_token,dst=/repo_access_token.txt \
       cd GITR && \
       git config --global core.editor vim && \
       git config --global user.name null && \ 
       git config --global user.email null && \
-      git remote add fetch_origin https://${REPO_ACCESS_TOKEN}:x-oath-basic@github.com:ORNL-Fusion/GITR.git && \
-      git remote add push_origin https://${REPO_ACCESS_TOKEN}:x-oath-basic@github.com:stonecoldhughes/GITR.git && \
-      git remote rm origin" ]
+      git remote add official https://$(cat /repo_access_token.txt):x-oath-basic@github.com:ORNL-Fusion/GITR.git && \
+      git remote add dev_remote https://$(cat /repo_access_token.txt):x-oath-basic@github.com:stonecoldhughes/GITR.git && \
+      git remote rm origin
 
+from stage_2 as stage_3
+# this should work since the repo access token should already be embedded in the remotes
+run ["bash", "-c", \
+      " \
+      cd GITR && \
+      git fetch dev_remote && \
+      git checkout update/build_system"]
+
+# This should be set by the run script to the correct output. Actually... do you even need it?
+# With your remotes setup like that, you could probably just not...
+# env REPO_ACCESS_TOKEN "invalid_token"
+
+# Captain! redo everything bdlow here. Set ENV up to contain an invalid repo access token
+# setup GITR git configuration
 #run ["bash", "-c", \
 #      " \
 #      cd GITR && \
-#      git fetch push_origin && \
-#      git checkout update/build_system"]
+#      git config --global core.editor vim && \
+#      git config --global user.name null && \ 
+#      git config --global user.email null && \
+#      git remote add fetch_origin https://${REPO_ACCESS_TOKEN}:x-oath-basic@github.com:ORNL-Fusion/GITR.git && \
+#      git remote add push_origin https://${REPO_ACCESS_TOKEN}:x-oath-basic@github.com:stonecoldhughes/GITR.git && \
+#      git remote rm origin" ]
+

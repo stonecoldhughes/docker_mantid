@@ -14,7 +14,7 @@ from stage_0 as stage_1
 volume [ "/output" ]
 
 run --mount=type=secret,id=repo_access_token,dst=/repo_access_token.txt \
-    git clone https://$(cat /repo_access_token.txt):x-oath-basic@github.com/stonecoldhughes/gitr_ci_action.git
+    git clone https://$(cat /repo_access_token.txt):x-oath-basic@github.com/stonecoldhughes/GITR.git
     
 
 from stage_1 as stage_2
@@ -27,21 +27,33 @@ run --mount=type=secret,id=repo_access_token,dst=/repo_access_token.txt \
       git config --global core.editor vim && \
       git config --global user.name null && \ 
       git config --global user.email null && \
-      git remote add official https://$(cat /repo_access_token.txt):x-oath-basic@github.com:ORNL-Fusion/GITR.git && \
-      git remote add dev_remote https://$(cat /repo_access_token.txt):x-oath-basic@github.com:stonecoldhughes/GITR.git && \
+      git remote add official https://github.com/ORNL-Fusion/GITR.git && \
+      git remote add dev_remote https://github.com/stonecoldhughes/GITR.git && \
       git remote rm origin
 
 from stage_2 as stage_3
 # this should work since the repo access token should already be embedded in the remotes
-run ["bash", "-c", \
-      " \
+#run ["bash", "-c", \
+#      " \
+#      cd GITR && \
+#      git fetch dev_remote && \
+#      git checkout update/build_system"]
+
+run --mount=type=secret,id=repo_access_token,dst=/repo_access_token.txt \
       cd GITR && \
       git fetch dev_remote && \
-      git checkout update/build_system"]
+      git checkout update/build_system
+
+# Captain! Check this!
+env REPO_ACCESS_TOKEN "invalid_token"
+
+#Captain! Add Ninja as the build tool? Start using ninja and build GITR here.
+from stage_3 as stage_4
+
+#build GITR
 
 # This should be set by the run script to the correct output. Actually... do you even need it?
 # With your remotes setup like that, you could probably just not...
-# env REPO_ACCESS_TOKEN "invalid_token"
 
 # Captain! redo everything bdlow here. Set ENV up to contain an invalid repo access token
 # setup GITR git configuration

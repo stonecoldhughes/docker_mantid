@@ -11,7 +11,7 @@ run [ "bash", "-c", \
       cmake \
       vim \
       g++ \
-      gdb"]
+      gdb" ]
 
 # local configuration files for tmux, vim, and ssh.
 copy [ "docker_artifacts/bash_rc_file.txt", "/root/.bashrc" ] 

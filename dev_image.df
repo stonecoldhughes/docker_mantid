@@ -2,6 +2,7 @@ from ubuntu:20.04
 
 env DEBIAN_FRONTEND noninteractive
 
+# Captain! Modify all this to work only with GITR
 # general development packages
 run [ "bash", "-c", \
       "apt-get update && \

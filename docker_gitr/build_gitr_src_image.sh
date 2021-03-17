@@ -2,7 +2,7 @@ DOCKER_BUILDKIT=1 \
 docker build \
 --file gitr_src.df \
 --network host \
---secret id=repo_access_token,src=$1 \
+--secret id=github_repo_access_token,src=$1 \
 --tag gitr_src_image .
 # You should check to make sure the repo access token actually exists... set it from the
 # file and add it before DOCKER_BUILDKIT
